@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Học Liệu Lượng Giác Tương Tác</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0b0d14;
+  --panel: #12151f;
+  --panel2: #161a26;
+  --border: #1e2232;
+  --sin: #e8622a;
+  --cos: #2a8fd4;
+  --tan: #2ca85e;
+  --axis: #555;
+  --grid: #1c1f2e;
+  --text: #d8dce8;
+  --muted: #6b7180;
+  --white: #f0f2f8;
+  --accent: #e8622a;
+}
+
+body {
+  font-family: 'Sora', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 28px 20px;
+}
+
+.app {
+  width: 100%;
+  max-width: 1180px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.app-title {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.app-title span.dot {
+  width: 14px; height: 14px;
+  background: var(--sin);
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 10px var(--sin);
+}
+
+.main-layout {
+  display: grid;
+  grid-template-columns: 430px 1fr;
+  gap: 18px;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 20px;
+}
+
+.panel-header {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* -------- LEFT PANEL -------- */
+.circle-wrap {
+  position: relative;
+}
+canvas { display: block; border-radius: 8px; }
+#circle { background: #090b12; width: 390px; height: 390px; }
+
+.controls {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.angle-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.angle-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--white);
+  white-space: nowrap;
+  font-family: 'JetBrains Mono', monospace;
+}
+.angle-input {
+  width: 72px;
+  padding: 7px 10px;
+  background: #0a0c14;
+  border: 1px solid #2a2d3f;
+  border-radius: 7px;
+  color: var(--white);
+  font-size: 15px;
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  outline: none;
+  transition: border 0.2s;
+}
+.angle-input:focus { border-color: var(--sin); }
+.deg-unit {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.slider-wrap {
+  position: relative;
+  padding: 4px 0;
+}
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  margin-top: 4px;
+}
+input[type=range] {
+  width: 100%;
+  height: 4px;
+  appearance: none;
+  background: linear-gradient(to right, var(--sin) 0%, var(--sin) var(--pct, 32.5%), #2a2d3f var(--pct, 32.5%), #2a2d3f 100%);
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px; height: 20px;
+  background: var(--white);
+  border-radius: 50%;
+  border: 3px solid var(--sin);
+  box-shadow: 0 0 8px rgba(232,98,42,0.5);
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+input[type=range]::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 14px rgba(232,98,42,0.8);
+}
+
+.readout-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 4px;
+}
+.readout {
+  background: #0a0c14;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 8px;
+  text-align: center;
+}
+.readout.sin-card { border-top: 3px solid var(--sin); }
+.readout.cos-card { border-top: 3px solid var(--cos); }
+.readout.tan-card { border-top: 3px solid var(--tan); }
+.rlabel {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 5px;
+}
+.rval {
+  font-size: 20px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--white);
+}
+
+/* -------- RIGHT PANEL -------- */
+.graph-panel { display: flex; flex-direction: column; }
+
+.tab-row {
+  display: flex;
+  gap: 8px;
+}
+.tab {
+  padding: 7px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 7px;
+  color: var(--muted);
+  background: #0a0c14;
+  border: 1px solid var(--border);
+  transition: all 0.2s;
+  font-family: 'Sora', sans-serif;
+  letter-spacing: 0.03em;
+}
+.tab:hover { color: var(--white); }
+.tab.sin-tab.active  { background: var(--sin); color: #fff; border-color: var(--sin); }
+.tab.cos-tab.active  { background: var(--cos); color: #fff; border-color: var(--cos); }
+.tab.tan-tab.active  { background: var(--tan); color: #fff; border-color: var(--tan); }
+
+.graph-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.graph-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+#graph { background: #090b12; border-radius: 8px; width: 100%; }
+
+.info-box {
+  margin-top: 12px;
+  background: #0a0c14;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text);
+}
+.info-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.info-val {
+  color: var(--white);
+  font-weight: 600;
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="app-title">
+    <span class="dot"></span>
+    Vòng Tròn Lượng Giác Tương Tác
+    <span class="dot"></span>
+  </div>
+
+  <div class="main-layout">
+    <!-- LEFT -->
+    <div class="panel">
+      <div class="panel-header">Minh Họa Trên Đường Tròn</div>
+      <canvas id="circle" width="390" height="390"></canvas>
+
+      <div class="controls">
+        <div class="angle-row">
+          <span class="angle-label">Góc θ:</span>
+          <input class="angle-input" type="number" id="angleNum" value="117" min="0" max="360">
+          <span class="deg-unit">độ (°)</span>
+        </div>
+        <div class="slider-wrap">
+          <input type="range" id="slider" min="0" max="360" value="117">
+          <div class="slider-labels"><span>0°</span><span>180°</span><span>360°</span></div>
+        </div>
+        <div class="readout-grid">
+          <div class="readout sin-card">
+            <div class="rlabel" style="color:var(--sin)">sin</div>
+            <div id="vsin" class="rval">—</div>
+          </div>
+          <div class="readout cos-card">
+            <div class="rlabel" style="color:var(--cos)">cos</div>
+            <div id="vcos" class="rval">—</div>
+          </div>
+          <div class="readout tan-card">
+            <div class="rlabel" style="color:var(--tan)">tan</div>
+            <div id="vtan" class="rval">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="panel graph-panel">
+      <div class="graph-header">
+        <div class="graph-title">Đồ Thị Hàm Số Lượng Giác (Oxy)</div>
+        <div class="tab-row">
+          <div class="tab sin-tab active" id="tab-sin" onclick="setTab('sin')">Hàm Sin</div>
+          <div class="tab cos-tab" id="tab-cos" onclick="setTab('cos')">Hàm Cos</div>
+          <div class="tab tan-tab" id="tab-tan" onclick="setTab('tan')">Hàm Tan</div>
+        </div>
+      </div>
+      <canvas id="graph" width="660" height="380"></canvas>
+      <div class="info-box">
+        <div class="info-row">
+          <span style="color:var(--muted)">θ =</span>
+          <span class="info-val" id="info-deg">117°</span>
+          <span style="color:var(--muted)">=</span>
+          <span class="info-val" id="info-rad">2.042 rad</span>
+        </div>
+        <div class="info-row">
+          <span class="info-dot" id="info-dot" style="background:var(--sin)"></span>
+          <span id="info-fn" style="color:var(--muted); font-size:13px">sin(θ) =</span>
+          <span class="info-val" id="info-val">0.8910</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let angle = 117;
+let activeTab = 'sin';
+
+const C = {
+  sin: '#e8622a', cos: '#2a8fd4', tan: '#2ca85e',
+  axis: '#666', grid: '#1a1d2a', gridMinor: '#13151e',
+  bg: '#090b12', white: '#f0f2f8', muted: '#555'
+};
+
+// ─── CIRCLE ───────────────────────────────────────────────────────────────────
+function drawCircle() {
+  const cv = document.getElementById('circle');
+  const ctx = cv.getContext('2d');
+  const W = cv.width, H = cv.height;
+  const cx = W / 2, cy = H / 2;
+  const R = 145;
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Background subtle grid
+  ctx.strokeStyle = '#111521';
+  ctx.lineWidth = 0.5;
+  for (let x = 0; x < W; x += 20) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+  for (let y = 0; y < H; y += 20) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+  // Unit circle
+  ctx.strokeStyle = '#252836';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI*2); ctx.stroke();
+
+  // Axes
+  ctx.strokeStyle = C.axis;
+  ctx.lineWidth = 1.2;
+  ctx.beginPath(); ctx.moveTo(15, cy); ctx.lineTo(W-15, cy); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx, 15); ctx.lineTo(cx, H-15); ctx.stroke();
+
+  // Axis arrows
+  ctx.fillStyle = C.axis;
+  arrow(ctx, W-15, cy, 1, 0); // +x
+  arrow(ctx, cx, 15, 0, -1);  // +y
+
+  // Axis labels
+  ctx.fillStyle = '#8899aa';
+  ctx.font = '13px Sora';
+  ctx.fillText('x', W - 10, cy + 16);
+  ctx.fillText('y', cx + 6, 18);
+
+  // Unit marks & numbers
+  ctx.fillStyle = '#6a7a8a';
+  ctx.font = '11px JetBrains Mono';
+  ctx.textAlign = 'center';
+  ctx.fillText('1', cx + R + 12, cy + 14);
+  ctx.fillText('-1', cx - R - 16, cy + 14);
+  ctx.textAlign = 'left';
+  ctx.fillText('1', cx + 4, cy - R - 4);
+  ctx.fillText('-1', cx + 4, cy + R + 12);
+
+  // Origin O
+  ctx.fillStyle = '#6a7a8a';
+  ctx.font = '12px Sora';
+  ctx.textAlign = 'right';
+  ctx.fillText('O', cx - 6, cy + 14);
+  ctx.textAlign = 'left';
+
+  // Tan axis (x = 1 dashed)
+  ctx.strokeStyle = '#2a3a2a';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([5, 4]);
+  ctx.beginPath(); ctx.moveTo(cx + R, 10); ctx.lineTo(cx + R, H - 10); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = C.tan;
+  ctx.font = 'bold 11px Sora';
+  ctx.fillText('trục tan', cx + R + 4, 26);
+  ctx.fillText('(x = 1)', cx + R + 4, 40);
+
+  const rad = -angle * Math.PI / 180;
+  const px = cx + R * Math.cos(rad);
+  const py = cy + R * Math.sin(rad);
+  const cosV = Math.cos(rad);
+  const sinV = Math.sin(rad);
+
+  // COS segment (on Ox)
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = C.cos;
+  ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(px, cy); ctx.stroke();
+  // cos label
+  const midCos = (cx + px) / 2;
+  ctx.fillStyle = C.cos;
+  ctx.font = 'bold 13px Sora';
+  ctx.textAlign = 'center';
+  ctx.fillText('cos', midCos, cy + (cosV >= 0 ? 18 : -8));
+
+  // SIN segment (vertical from px, cy to px, py)
+  ctx.strokeStyle = C.sin;
+  ctx.beginPath(); ctx.moveTo(px, cy); ctx.lineTo(px, py); ctx.stroke();
+  // sin label
+  ctx.fillStyle = C.sin;
+  ctx.textAlign = sinV < 0 ? 'left' : 'left';
+  const sinLabelX = px + (cosV >= 0 ? 10 : -38);
+  const sinLabelY = (cy + py) / 2 + 4;
+  ctx.fillText('sin', sinLabelX, sinLabelY);
+
+  // Tan projection
+  if (Math.abs(cosV) > 0.015) {
+    const tanY = cy + (sinV / cosV) * R;
+    if (tanY > 5 && tanY < H - 5) {
+      ctx.strokeStyle = 'rgba(255,215,0,0.2)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + R, tanY); ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = C.tan;
+      ctx.beginPath(); ctx.arc(cx + R, tanY, 5, 0, Math.PI*2); ctx.fill();
+      ctx.strokeStyle = 'rgba(44,168,94,0.5)'; ctx.lineWidth = 1.5; ctx.stroke();
+    }
+  }
+
+  // Radius
+  ctx.strokeStyle = 'rgba(240,242,248,0.7)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(px, py); ctx.stroke();
+
+  // Angle arc
+  ctx.beginPath();
+  ctx.arc(cx, cy, 28, 0, rad, angle > 0);
+  ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // Angle label
+  const al = angle * Math.PI / 180;
+  const ax = cx + 40 * Math.cos(-al / 2);
+  const ay = cy + 40 * Math.sin(-al / 2);
+  ctx.fillStyle = var_white_text();
+  ctx.font = 'bold 14px JetBrains Mono';
+  ctx.textAlign = 'center';
+  ctx.fillText(angle + '°', ax, ay);
+
+  // Point P(x,y)
+  ctx.fillStyle = C.sin;
+  ctx.beginPath(); ctx.arc(px, py, 7, 0, Math.PI*2); ctx.fill();
+  ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+
+  // Point label
+  ctx.fillStyle = '#aabbc0';
+  ctx.font = '11px JetBrains Mono';
+  ctx.textAlign = cosV >= 0 ? 'left' : 'right';
+  const labelOff = cosV >= 0 ? 12 : -12;
+  ctx.fillText(`P(${cosV.toFixed(2)}, ${(-sinV).toFixed(2)})`, px + labelOff, py - 12);
+
+  ctx.textAlign = 'left';
+}
+
+function var_white_text() { return '#e0e8f0'; }
+
+function arrow(ctx, x, y, dx, dy) {
+  ctx.fillStyle = C.axis;
+  ctx.beginPath();
+  const size = 7;
+  ctx.moveTo(x + dx*size, y + dy*size);
+  ctx.lineTo(x - dy*4, y + dx*4);
+  ctx.lineTo(x + dy*4, y - dx*4);
+  ctx.fill();
+}
+
+// ─── GRAPH ────────────────────────────────────────────────────────────────────
+function drawGraph() {
+  const cv = document.getElementById('graph');
+  const ctx = cv.getContext('2d');
+  const W = cv.width, H = cv.height;
+
+  ctx.clearRect(0, 0, W, H);
+
+  const padL = 56, padR = 30, padT = 20, padB = 36;
+  const gW = W - padL - padR;
+  const gH = H - padT - padB;
+  const midY = padT + gH / 2;
+  const startX = padL;
+
+  // x range: 0 to 2π, with room for -x if needed — just show 0..2π
+  const xScale = gW / (2 * Math.PI); // pixels per radian
+  const yScale = gH / 4.6;           // -2.3 to 2.3 visible range (tan clipped)
+
+  function toScreen(xRad, yVal) {
+    return {
+      x: startX + xRad * xScale,
+      y: midY - yVal * yScale
+    };
+  }
+
+  // Background subtle grid lines
+  ctx.lineWidth = 0.5;
+  // Horizontal lines at -2,-1,0,1,2
+  [-2,-1,0,1,2].forEach(v => {
+    const sy = midY - v * yScale;
+    ctx.strokeStyle = v === 0 ? '#2a2d3f' : C.gridMinor || '#131623';
+    ctx.beginPath(); ctx.moveTo(padL, sy); ctx.lineTo(W - padR, sy); ctx.stroke();
+  });
+  // Vertical lines at π/2, π, 3π/2, 2π
+  [0.5, 1, 1.5, 2].forEach(mul => {
+    const sx = startX + mul * Math.PI * xScale;
+    ctx.strokeStyle = mul === 1 ? '#2a2d3f' : '#131623';
+    ctx.beginPath(); ctx.moveTo(sx, padT); ctx.lineTo(sx, H - padB); ctx.stroke();
+  });
+
+  // Axes
+  ctx.strokeStyle = '#8899aa';
+  ctx.lineWidth = 1.5;
+  // Ox
+  ctx.beginPath(); ctx.moveTo(padL, midY); ctx.lineTo(W - padR + 10, midY); ctx.stroke();
+  ctx.fillStyle = '#8899aa';
+  arrow(ctx, W - padR + 10, midY, 1, 0);
+  // Oy
+  ctx.beginPath(); ctx.moveTo(startX, H - padB); ctx.lineTo(startX, padT - 5); ctx.stroke();
+  arrow(ctx, startX, padT - 5, 0, -1);
+
+  // Axis labels
+  ctx.fillStyle = '#aabbc0';
+  ctx.font = 'bold 13px Sora';
+  ctx.fillText('x', W - padR + 14, midY + 5);
+  ctx.fillText('y', startX - 18, padT);
+
+  // Y axis ticks and numbers
+  ctx.fillStyle = '#6a7a8a';
+  ctx.font = '11px JetBrains Mono';
+  ctx.textAlign = 'right';
+  [-2,-1,1,2].forEach(v => {
+    const sy = midY - v * yScale;
+    ctx.beginPath(); ctx.moveTo(startX - 4, sy); ctx.lineTo(startX + 4, sy);
+    ctx.strokeStyle = '#444'; ctx.lineWidth = 1; ctx.stroke();
+    ctx.fillText(v, startX - 8, sy + 4);
+  });
+
+  // X axis π labels
+  ctx.textAlign = 'center';
+  const piLabels = [['π/2', 0.5], ['π', 1], ['3π/2', 1.5], ['2π', 2]];
+  piLabels.forEach(([lbl, mul]) => {
+    const sx = startX + mul * Math.PI * xScale;
+    ctx.beginPath(); ctx.moveTo(sx, midY - 4); ctx.lineTo(sx, midY + 4);
+    ctx.strokeStyle = '#444'; ctx.lineWidth = 1; ctx.stroke();
+    ctx.fillStyle = '#6a7a8a';
+    ctx.font = '11px JetBrains Mono';
+    ctx.fillText(lbl, sx, midY + 18);
+  });
+
+  // 0 label
+  ctx.textAlign = 'right';
+  ctx.fillStyle = '#6a7a8a';
+  ctx.fillText('0', startX - 6, midY + 14);
+
+  // Draw function curve
+  const color = activeTab === 'sin' ? C.sin : activeTab === 'cos' ? C.cos : C.tan;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  let first = true;
+  const steps = gW * 2;
+  for (let i = 0; i <= steps; i++) {
+    const xRad = (i / steps) * 2 * Math.PI;
+    let yVal;
+    if (activeTab === 'sin') yVal = Math.sin(xRad);
+    else if (activeTab === 'cos') yVal = Math.cos(xRad);
+    else yVal = Math.tan(xRad);
+
+    if (activeTab === 'tan' && Math.abs(yVal) > 2.2) {
+      ctx.stroke(); ctx.beginPath(); first = true; continue;
+    }
+    const pt = toScreen(xRad, yVal);
+    if (first) { ctx.moveTo(pt.x, pt.y); first = false; }
+    else ctx.lineTo(pt.x, pt.y);
+  }
+  ctx.stroke();
+
+  // Current angle marker on graph
+  const curRad = (((angle % 360) + 360) % 360) * Math.PI / 180;
+  let markerY;
+  if (activeTab === 'sin') markerY = Math.sin(curRad);
+  else if (activeTab === 'cos') markerY = Math.cos(curRad);
+  else markerY = Math.tan(curRad);
+
+  const mpt = toScreen(curRad, markerY);
+  if (mpt.x >= padL && mpt.x <= W - padR && (!( activeTab === 'tan') || Math.abs(markerY) < 2.2)) {
+    // Dashed vertical line from x-axis to point
+    ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 3]);
+    ctx.beginPath(); ctx.moveTo(mpt.x, midY); ctx.lineTo(mpt.x, mpt.y); ctx.stroke();
+    // Dashed horizontal line to y-axis
+    ctx.beginPath(); ctx.moveTo(padL, mpt.y); ctx.lineTo(mpt.x, mpt.y); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Marker circle
+    ctx.fillStyle = color;
+    ctx.beginPath(); ctx.arc(mpt.x, mpt.y, 7, 0, Math.PI*2); ctx.fill();
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+  }
+}
+
+// ─── UPDATE ───────────────────────────────────────────────────────────────────
+function update() {
+  const rad = angle * Math.PI / 180;
+  const s = Math.sin(rad), c = Math.cos(rad), t = Math.tan(rad);
+  document.getElementById('vsin').textContent = s.toFixed(4);
+  document.getElementById('vcos').textContent = c.toFixed(4);
+  document.getElementById('vtan').textContent = Math.abs(c) < 0.01 ? '∞' : t.toFixed(4);
+
+  document.getElementById('info-deg').textContent = angle + '°';
+  document.getElementById('info-rad').textContent = rad.toFixed(3) + ' rad';
+  const fnNames = { sin: 'sin(θ)', cos: 'cos(θ)', tan: 'tan(θ)' };
+  const fnVals  = { sin: s, cos: c, tan: t };
+  document.getElementById('info-fn').textContent = fnNames[activeTab] + ' =';
+  document.getElementById('info-val').textContent =
+    (activeTab === 'tan' && Math.abs(c) < 0.01) ? '∞' : fnVals[activeTab].toFixed(4);
+  const dotColors = { sin: 'var(--sin)', cos: 'var(--cos)', tan: 'var(--tan)' };
+  document.getElementById('info-dot').style.background = dotColors[activeTab];
+
+  // Slider gradient
+  const sl = document.getElementById('slider');
+  const pct = (angle / 360 * 100).toFixed(1) + '%';
+  sl.style.setProperty('--pct', pct);
+
+  drawCircle();
+  drawGraph();
+}
+
+function setAngle(v) {
+  angle = Math.max(0, Math.min(360, parseInt(v) || 0));
+  document.getElementById('slider').value = angle;
+  document.getElementById('angleNum').value = angle;
+  update();
+}
+
+function setTab(t) {
+  activeTab = t;
+  document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + t).classList.add('active');
+  update();
+}
+
+document.getElementById('slider').oninput  = e => setAngle(e.target.value);
+document.getElementById('angleNum').oninput = e => setAngle(e.target.value);
+
+// Responsive graph canvas
+function resizeGraph() {
+  const gPanel = document.getElementById('graph').parentElement;
+  const newW = gPanel.clientWidth - 40;
+  if (newW > 300) {
+    document.getElementById('graph').width = newW;
+  }
+}
+window.addEventListener('resize', () => { resizeGraph(); update(); });
+resizeGraph();
+update();
+</script>
+</body>
+</html>
