@@ -1,699 +1,701 @@
-<!DOCTYPE html>
+
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style>
+          /* Base reset */
+          * { box-sizing: border-box; }
+          /* User CSS */
+          
+        </style>
+        <script>
+            // Capture console.log to display in parent (Optional future enhancement, currently just preventing errors)
+            window.onerror = function(message, source, lineno, colno, error) {
+                console.error('Preview Error:', message);
+            };
+        </script>
+      </head>
+      <body>
+        <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Học Liệu Lượng Giác Tương Tác</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --bg: #0b0d14;
-  --panel: #12151f;
-  --panel2: #161a26;
-  --border: #1e2232;
-  --sin: #e8622a;
-  --cos: #2a8fd4;
-  --tan: #2ca85e;
-  --axis: #555;
-  --grid: #1c1f2e;
-  --text: #d8dce8;
-  --muted: #6b7180;
-  --white: #f0f2f8;
-  --accent: #e8622a;
-}
-
-body {
-  font-family: 'Sora', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 28px 20px;
-}
-
-.app {
-  width: 100%;
-  max-width: 1180px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.app-title {
-  text-align: center;
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--white);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-.app-title span.dot {
-  width: 14px; height: 14px;
-  background: var(--sin);
-  border-radius: 50%;
-  display: inline-block;
-  box-shadow: 0 0 10px var(--sin);
-}
-
-.main-layout {
-  display: grid;
-  grid-template-columns: 430px 1fr;
-  gap: 18px;
-}
-
-.panel {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 18px 20px;
-}
-
-.panel-header {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--muted);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  margin-bottom: 14px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--border);
-}
-
-/* -------- LEFT PANEL -------- */
-.circle-wrap {
-  position: relative;
-}
-canvas { display: block; border-radius: 8px; }
-#circle { background: #090b12; width: 390px; height: 390px; }
-
-.controls {
-  margin-top: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.angle-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.angle-label {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--white);
-  white-space: nowrap;
-  font-family: 'JetBrains Mono', monospace;
-}
-.angle-input {
-  width: 72px;
-  padding: 7px 10px;
-  background: #0a0c14;
-  border: 1px solid #2a2d3f;
-  border-radius: 7px;
-  color: var(--white);
-  font-size: 15px;
-  text-align: center;
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 600;
-  outline: none;
-  transition: border 0.2s;
-}
-.angle-input:focus { border-color: var(--sin); }
-.deg-unit {
-  font-size: 13px;
-  color: var(--muted);
-}
-
-.slider-wrap {
-  position: relative;
-  padding: 4px 0;
-}
-.slider-labels {
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-  color: var(--muted);
-  font-family: 'JetBrains Mono', monospace;
-  margin-top: 4px;
-}
-input[type=range] {
-  width: 100%;
-  height: 4px;
-  appearance: none;
-  background: linear-gradient(to right, var(--sin) 0%, var(--sin) var(--pct, 32.5%), #2a2d3f var(--pct, 32.5%), #2a2d3f 100%);
-  border-radius: 4px;
-  outline: none;
-  cursor: pointer;
-}
-input[type=range]::-webkit-slider-thumb {
-  appearance: none;
-  width: 20px; height: 20px;
-  background: var(--white);
-  border-radius: 50%;
-  border: 3px solid var(--sin);
-  box-shadow: 0 0 8px rgba(232,98,42,0.5);
-  cursor: pointer;
-  transition: box-shadow 0.2s;
-}
-input[type=range]::-webkit-slider-thumb:hover {
-  box-shadow: 0 0 14px rgba(232,98,42,0.8);
-}
-
-.readout-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-top: 4px;
-}
-.readout {
-  background: #0a0c14;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 12px 8px;
-  text-align: center;
-}
-.readout.sin-card { border-top: 3px solid var(--sin); }
-.readout.cos-card { border-top: 3px solid var(--cos); }
-.readout.tan-card { border-top: 3px solid var(--tan); }
-.rlabel {
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  margin-bottom: 5px;
-}
-.rval {
-  font-size: 20px;
-  font-weight: 700;
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--white);
-}
-
-/* -------- RIGHT PANEL -------- */
-.graph-panel { display: flex; flex-direction: column; }
-
-.tab-row {
-  display: flex;
-  gap: 8px;
-}
-.tab {
-  padding: 7px 20px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  border-radius: 7px;
-  color: var(--muted);
-  background: #0a0c14;
-  border: 1px solid var(--border);
-  transition: all 0.2s;
-  font-family: 'Sora', sans-serif;
-  letter-spacing: 0.03em;
-}
-.tab:hover { color: var(--white); }
-.tab.sin-tab.active  { background: var(--sin); color: #fff; border-color: var(--sin); }
-.tab.cos-tab.active  { background: var(--cos); color: #fff; border-color: var(--cos); }
-.tab.tan-tab.active  { background: var(--tan); color: #fff; border-color: var(--tan); }
-
-.graph-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 14px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--border);
-}
-.graph-title {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--muted);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-#graph { background: #090b12; border-radius: 8px; width: 100%; }
-
-.info-box {
-  margin-top: 12px;
-  background: #0a0c14;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 12px 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  font-family: 'JetBrains Mono', monospace;
-}
-.info-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 14px;
-  color: var(--text);
-}
-.info-dot {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-.info-val {
-  color: var(--white);
-  font-weight: 600;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khám phá Hàm số Lượng giác</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Tùy chỉnh màu sắc thanh trượt và checkboxes */
+        input[type=range] { accent-color: #6366f1; }
+        .checkbox-sin { accent-color: #ef4444; }
+        .checkbox-cos { accent-color: #3b82f6; }
+        .checkbox-tan { accent-color: #22c55e; }
+        .checkbox-cot { accent-color: #a855f7; }
+        canvas { touch-action: none; }
+    </style>
 </head>
-<body>
+<body class="bg-slate-900 text-slate-100 font-sans h-screen flex flex-col">
 
-<div class="app">
-  <div class="app-title">
-    <span class="dot"></span>
-    Vòng Tròn Lượng Giác Tương Tác
-    <span class="dot"></span>
-  </div>
-
-  <div class="main-layout">
-    <!-- LEFT -->
-    <div class="panel">
-      <div class="panel-header">Minh Họa Trên Đường Tròn</div>
-      <canvas id="circle" width="390" height="390"></canvas>
-
-      <div class="controls">
-        <div class="angle-row">
-          <span class="angle-label">Góc θ:</span>
-          <input class="angle-input" type="number" id="angleNum" value="117" min="0" max="360">
-          <span class="deg-unit">độ (°)</span>
+    <header class="bg-slate-800 text-white p-4 shadow-md flex justify-between items-center z-10 relative border-b border-slate-700">
+        <h1 class="text-xl md:text-2xl font-bold">Khám Phá Hàm Số Lượng Giác</h1>
+        <div class="text-sm md:text-base bg-slate-900 px-3 py-1 rounded-full border border-slate-600 shadow-inner text-indigo-300">
+            Góc hiện tại: <span id="angleDisplay" class="font-mono font-bold w-20 inline-block text-right">-2.00π</span>
         </div>
-        <div class="slider-wrap">
-          <input type="range" id="slider" min="0" max="360" value="117">
-          <div class="slider-labels"><span>0°</span><span>180°</span><span>360°</span></div>
+    </header>
+
+    <main class="flex-1 flex flex-col lg:flex-row overflow-hidden gap-4 p-4 relative">
+        
+        <!-- Overlay Canvas dùng để vẽ đường nối nét đứt giữa 2 bảng -->
+        <canvas id="overlayCanvas" class="absolute top-0 left-0 w-full h-full pointer-events-none z-50"></canvas>
+
+        <!-- Cột trái: Vòng tròn lượng giác -->
+        <div class="flex-1 bg-slate-800 rounded-xl shadow-lg border border-slate-700 flex flex-col relative min-h-[300px]">
+            <div class="p-3 border-b border-slate-700 font-semibold text-slate-300 bg-slate-800/50 rounded-t-xl z-10">
+                Vòng Tròn Lượng Giác
+            </div>
+            <div class="flex-1 relative w-full h-full" id="circleContainer">
+                <canvas id="circleCanvas" class="absolute top-0 left-0 w-full h-full"></canvas>
+            </div>
         </div>
-        <div class="readout-grid">
-          <div class="readout sin-card">
-            <div class="rlabel" style="color:var(--sin)">sin</div>
-            <div id="vsin" class="rval">—</div>
-          </div>
-          <div class="readout cos-card">
-            <div class="rlabel" style="color:var(--cos)">cos</div>
-            <div id="vcos" class="rval">—</div>
-          </div>
-          <div class="readout tan-card">
-            <div class="rlabel" style="color:var(--tan)">tan</div>
-            <div id="vtan" class="rval">—</div>
-          </div>
+
+        <!-- Cột phải: Đồ thị hàm số -->
+        <div class="flex-1 lg:flex-[2] bg-slate-800 rounded-xl shadow-lg border border-slate-700 flex flex-col relative min-h-[300px]">
+            <div class="p-3 border-b border-slate-700 font-semibold text-slate-300 bg-slate-800/50 rounded-t-xl flex justify-between items-center z-10">
+                <span>Đồ Thị Hàm Số Oxy</span>
+                <span class="text-xs font-normal text-slate-400">Tỉ lệ chuẩn toán học (1:1)</span>
+            </div>
+            <div class="flex-1 relative w-full h-full" id="graphContainer">
+                <canvas id="graphCanvas" class="absolute top-0 left-0 w-full h-full"></canvas>
+            </div>
         </div>
-      </div>
-    </div>
+    </main>
 
-    <!-- RIGHT -->
-    <div class="panel graph-panel">
-      <div class="graph-header">
-        <div class="graph-title">Đồ Thị Hàm Số Lượng Giác (Oxy)</div>
-        <div class="tab-row">
-          <div class="tab sin-tab active" id="tab-sin" onclick="setTab('sin')">Hàm Sin</div>
-          <div class="tab cos-tab" id="tab-cos" onclick="setTab('cos')">Hàm Cos</div>
-          <div class="tab tan-tab" id="tab-tan" onclick="setTab('tan')">Hàm Tan</div>
+    <footer class="bg-slate-800 border-t border-slate-700 p-4 md:p-6 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-10 relative">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row gap-6 items-center">
+            
+            <div class="flex flex-wrap justify-center gap-4 md:gap-6 bg-slate-900 p-3 rounded-lg w-full md:w-auto border border-slate-700">
+                <label class="flex items-center gap-2 cursor-pointer font-semibold text-red-500 hover:opacity-80 transition">
+                    <input type="checkbox" id="chkSin" class="checkbox-sin w-5 h-5 cursor-pointer"> y = sin(x)
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer font-semibold text-blue-500 hover:opacity-80 transition">
+                    <input type="checkbox" id="chkCos" class="checkbox-cos w-5 h-5 cursor-pointer"> y = cos(x)
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer font-semibold text-green-500 hover:opacity-80 transition">
+                    <input type="checkbox" id="chkTan" class="checkbox-tan w-5 h-5 cursor-pointer"> y = tan(x)
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer font-semibold text-purple-500 hover:opacity-80 transition">
+                    <input type="checkbox" id="chkCot" class="checkbox-cot w-5 h-5 cursor-pointer"> y = cot(x)
+                </label>
+            </div>
+
+            <div class="flex-1 w-full flex flex-col gap-2">
+                <div class="flex justify-between items-center text-sm font-semibold text-slate-400 mb-1">
+                    <span>-2π</span>
+                    <div class="flex gap-2">
+                        <!-- Nút Bắt đầu lại -->
+                        <button id="btnResetAngle" class="flex items-center gap-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-1.5 rounded-md transition-colors shadow-sm cursor-pointer z-10">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                            <span class="hidden sm:inline">Bắt đầu lại</span>
+                        </button>
+                        <!-- Nút Tự động chạy -->
+                        <button id="btnAutoPlay" class="flex items-center gap-1.5 bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 px-3 py-1.5 rounded-md transition-colors shadow-sm cursor-pointer z-10 border border-indigo-500/30">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                            <span>Tự động chạy</span>
+                        </button>
+                    </div>
+                    <span>2π</span>
+                </div>
+                <!-- Slider chạy từ -2*PI đến 2*PI -->
+                <input type="range" id="angleSlider" min="-6.28319" max="6.28319" step="0.01" value="-6.28319" 
+                       class="w-full h-3 bg-slate-700 rounded-lg appearance-none cursor-pointer">
+                <div class="flex justify-between text-xs text-slate-400 mt-1">
+                    <span>-1 vòng</span>
+                    <span>-1/2 vòng</span>
+                    <span>0</span>
+                    <span>1/2 vòng</span>
+                    <span>1 vòng</span>
+                </div>
+            </div>
+
         </div>
-      </div>
-      <canvas id="graph" width="660" height="380"></canvas>
-      <div class="info-box">
-        <div class="info-row">
-          <span style="color:var(--muted)">θ =</span>
-          <span class="info-val" id="info-deg">117°</span>
-          <span style="color:var(--muted)">=</span>
-          <span class="info-val" id="info-rad">2.042 rad</span>
-        </div>
-        <div class="info-row">
-          <span class="info-dot" id="info-dot" style="background:var(--sin)"></span>
-          <span id="info-fn" style="color:var(--muted); font-size:13px">sin(θ) =</span>
-          <span class="info-val" id="info-val">0.8910</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+    </footer>
 
-<script>
-let angle = 117;
-let activeTab = 'sin';
+    <script>
+        const COLORS = {
+            sin: '#ef4444', cos: '#3b82f6', tan: '#22c55e', cot: '#a855f7',
+            axis: '#64748b', grid: '#334155', circle: '#94a3b8', angle: '#f59e0b',
+            text: '#cbd5e1' // Thêm màu chữ sáng dành cho chế độ tối
+        };
 
-const C = {
-  sin: '#e8622a', cos: '#2a8fd4', tan: '#2ca85e',
-  axis: '#666', grid: '#1a1d2a', gridMinor: '#13151e',
-  bg: '#090b12', white: '#f0f2f8', muted: '#555'
-};
+        let currentAngle = -6.28319;
+        let show = { sin: false, cos: false, tan: false, cot: false };
+        let sharedScale = 50; // Biến lưu tỷ lệ dùng chung cho vòng tròn và đồ thị
 
-// ─── CIRCLE ───────────────────────────────────────────────────────────────────
-function drawCircle() {
-  const cv = document.getElementById('circle');
-  const ctx = cv.getContext('2d');
-  const W = cv.width, H = cv.height;
-  const cx = W / 2, cy = H / 2;
-  const R = 145;
+        // Lấy các DOM Elements
+        const circleCanvas = document.getElementById('circleCanvas');
+        const graphCanvas = document.getElementById('graphCanvas');
+        const overlayCanvas = document.getElementById('overlayCanvas');
+        const ctxCircle = circleCanvas.getContext('2d');
+        const ctxGraph = graphCanvas.getContext('2d');
+        const ctxOverlay = overlayCanvas.getContext('2d');
+        const slider = document.getElementById('angleSlider');
+        const angleDisplay = document.getElementById('angleDisplay');
+        const mainElement = document.querySelector('main');
 
-  ctx.clearRect(0, 0, W, H);
+        // Bộ nhớ lưu tọa độ để vẽ đường kết nối Overlay
+        let globalPoints = { circle: {}, graph: {} };
 
-  // Background subtle grid
-  ctx.strokeStyle = '#111521';
-  ctx.lineWidth = 0.5;
-  for (let x = 0; x < W; x += 20) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
-  for (let y = 0; y < H; y += 20) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+        let isAutoPlaying = false;
+        let autoPlayAnimationId;
+        const autoPlaySpeed = 0.02; // Tốc độ tự động chạy (đã giảm 1/2)
+        const btnAutoPlay = document.getElementById('btnAutoPlay');
+        const btnResetAngle = document.getElementById('btnResetAngle');
+        
+        const iconPlay = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+        const iconPause = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
 
-  // Unit circle
-  ctx.strokeStyle = '#252836';
-  ctx.lineWidth = 1.5;
-  ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI*2); ctx.stroke();
+        function autoPlayLoop() {
+            if (!isAutoPlaying) return;
 
-  // Axes
-  ctx.strokeStyle = C.axis;
-  ctx.lineWidth = 1.2;
-  ctx.beginPath(); ctx.moveTo(15, cy); ctx.lineTo(W-15, cy); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(cx, 15); ctx.lineTo(cx, H-15); ctx.stroke();
+            currentAngle += autoPlaySpeed;
+            
+            // Nếu chạy hết thanh trượt, quay lại từ đầu (-2 PI)
+            if (currentAngle > parseFloat(slider.max)) {
+                currentAngle = parseFloat(slider.min);
+            }
 
-  // Axis arrows
-  ctx.fillStyle = C.axis;
-  arrow(ctx, W-15, cy, 1, 0); // +x
-  arrow(ctx, cx, 15, 0, -1);  // +y
+            slider.value = currentAngle;
+            updateDisplay();
+            draw();
 
-  // Axis labels
-  ctx.fillStyle = '#8899aa';
-  ctx.font = '13px Sora';
-  ctx.fillText('x', W - 10, cy + 16);
-  ctx.fillText('y', cx + 6, 18);
+            autoPlayAnimationId = requestAnimationFrame(autoPlayLoop);
+        }
 
-  // Unit marks & numbers
-  ctx.fillStyle = '#6a7a8a';
-  ctx.font = '11px JetBrains Mono';
-  ctx.textAlign = 'center';
-  ctx.fillText('1', cx + R + 12, cy + 14);
-  ctx.fillText('-1', cx - R - 16, cy + 14);
-  ctx.textAlign = 'left';
-  ctx.fillText('1', cx + 4, cy - R - 4);
-  ctx.fillText('-1', cx + 4, cy + R + 12);
+        function toggleAutoPlay() {
+            isAutoPlaying = !isAutoPlaying;
+            if (isAutoPlaying) {
+                btnAutoPlay.innerHTML = iconPause + ' <span>Dừng</span>';
+                btnAutoPlay.classList.remove('bg-indigo-500/20', 'text-indigo-300', 'hover:bg-indigo-500/30', 'border-indigo-500/30');
+                btnAutoPlay.classList.add('bg-red-500/20', 'text-red-300', 'hover:bg-red-500/30', 'border-red-500/30');
+                autoPlayLoop();
+            } else {
+                btnAutoPlay.innerHTML = iconPlay + ' <span>Tự động chạy</span>';
+                btnAutoPlay.classList.remove('bg-red-500/20', 'text-red-300', 'hover:bg-red-500/30', 'border-red-500/30');
+                btnAutoPlay.classList.add('bg-indigo-500/20', 'text-indigo-300', 'hover:bg-indigo-500/30', 'border-indigo-500/30');
+                cancelAnimationFrame(autoPlayAnimationId);
+            }
+        }
 
-  // Origin O
-  ctx.fillStyle = '#6a7a8a';
-  ctx.font = '12px Sora';
-  ctx.textAlign = 'right';
-  ctx.fillText('O', cx - 6, cy + 14);
-  ctx.textAlign = 'left';
+        btnAutoPlay.addEventListener('click', toggleAutoPlay);
 
-  // Tan axis (x = 1 dashed)
-  ctx.strokeStyle = '#2a3a2a';
-  ctx.lineWidth = 1;
-  ctx.setLineDash([5, 4]);
-  ctx.beginPath(); ctx.moveTo(cx + R, 10); ctx.lineTo(cx + R, H - 10); ctx.stroke();
-  ctx.setLineDash([]);
-  ctx.fillStyle = C.tan;
-  ctx.font = 'bold 11px Sora';
-  ctx.fillText('trục tan', cx + R + 4, 26);
-  ctx.fillText('(x = 1)', cx + R + 4, 40);
+        btnResetAngle.addEventListener('click', () => {
+            if (isAutoPlaying) toggleAutoPlay(); // Dừng nếu đang chạy tự động
+            currentAngle = parseFloat(slider.min); // Trở về vị trí bắt đầu
+            slider.value = currentAngle;
+            updateDisplay();
+            draw();
+        });
 
-  const rad = -angle * Math.PI / 180;
-  const px = cx + R * Math.cos(rad);
-  const py = cy + R * Math.sin(rad);
-  const cosV = Math.cos(rad);
-  const sinV = Math.sin(rad);
+        // Dừng tự động nếu người dùng chủ động tương tác thanh trượt
+        slider.addEventListener('mousedown', () => { if (isAutoPlaying) toggleAutoPlay(); });
+        slider.addEventListener('touchstart', () => { if (isAutoPlaying) toggleAutoPlay(); }, {passive: true});
 
-  // COS segment (on Ox)
-  ctx.lineWidth = 3;
-  ctx.strokeStyle = C.cos;
-  ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(px, cy); ctx.stroke();
-  // cos label
-  const midCos = (cx + px) / 2;
-  ctx.fillStyle = C.cos;
-  ctx.font = 'bold 13px Sora';
-  ctx.textAlign = 'center';
-  ctx.fillText('cos', midCos, cy + (cosV >= 0 ? 18 : -8));
+        slider.addEventListener('input', (e) => {
+            currentAngle = parseFloat(e.target.value);
+            updateDisplay();
+            draw();
+        });
 
-  // SIN segment (vertical from px, cy to px, py)
-  ctx.strokeStyle = C.sin;
-  ctx.beginPath(); ctx.moveTo(px, cy); ctx.lineTo(px, py); ctx.stroke();
-  // sin label
-  ctx.fillStyle = C.sin;
-  ctx.textAlign = sinV < 0 ? 'left' : 'left';
-  const sinLabelX = px + (cosV >= 0 ? 10 : -38);
-  const sinLabelY = (cy + py) / 2 + 4;
-  ctx.fillText('sin', sinLabelX, sinLabelY);
+        ['chkSin', 'chkCos', 'chkTan', 'chkCot'].forEach(id => {
+            document.getElementById(id).addEventListener('change', (e) => {
+                const func = id.replace('chk', '').toLowerCase();
+                show[func] = e.target.checked;
+                draw();
+            });
+        });
 
-  // Tan projection
-  if (Math.abs(cosV) > 0.015) {
-    const tanY = cy + (sinV / cosV) * R;
-    if (tanY > 5 && tanY < H - 5) {
-      ctx.strokeStyle = 'rgba(255,215,0,0.2)';
-      ctx.lineWidth = 1;
-      ctx.setLineDash([3, 3]);
-      ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + R, tanY); ctx.stroke();
-      ctx.setLineDash([]);
+        function resizeCanvas() {
+            const circleRect = document.getElementById('circleContainer').getBoundingClientRect();
+            circleCanvas.width = circleRect.width;
+            circleCanvas.height = circleRect.height;
 
-      ctx.fillStyle = C.tan;
-      ctx.beginPath(); ctx.arc(cx + R, tanY, 5, 0, Math.PI*2); ctx.fill();
-      ctx.strokeStyle = 'rgba(44,168,94,0.5)'; ctx.lineWidth = 1.5; ctx.stroke();
-    }
-  }
+            const graphRect = document.getElementById('graphContainer').getBoundingClientRect();
+            graphCanvas.width = graphRect.width;
+            graphCanvas.height = graphRect.height;
 
-  // Radius
-  ctx.strokeStyle = 'rgba(240,242,248,0.7)';
-  ctx.lineWidth = 1.5;
-  ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(px, py); ctx.stroke();
+            const mainRect = mainElement.getBoundingClientRect();
+            overlayCanvas.width = mainRect.width;
+            overlayCanvas.height = mainRect.height;
 
-  // Angle arc
-  ctx.beginPath();
-  ctx.arc(cx, cy, 28, 0, rad, angle > 0);
-  ctx.strokeStyle = 'rgba(255,255,255,0.5)';
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
+            draw();
+        }
 
-  // Angle label
-  const al = angle * Math.PI / 180;
-  const ax = cx + 40 * Math.cos(-al / 2);
-  const ay = cy + 40 * Math.sin(-al / 2);
-  ctx.fillStyle = var_white_text();
-  ctx.font = 'bold 14px JetBrains Mono';
-  ctx.textAlign = 'center';
-  ctx.fillText(angle + '°', ax, ay);
+        window.addEventListener('resize', resizeCanvas);
 
-  // Point P(x,y)
-  ctx.fillStyle = C.sin;
-  ctx.beginPath(); ctx.arc(px, py, 7, 0, Math.PI*2); ctx.fill();
-  ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+        function updateDisplay() {
+            let piValue = currentAngle / Math.PI;
+            angleDisplay.textContent = (piValue > 0 ? "+" : "") + piValue.toFixed(2) + "π";
+        }
 
-  // Point label
-  ctx.fillStyle = '#aabbc0';
-  ctx.font = '11px JetBrains Mono';
-  ctx.textAlign = cosV >= 0 ? 'left' : 'right';
-  const labelOff = cosV >= 0 ? 12 : -12;
-  ctx.fillText(`P(${cosV.toFixed(2)}, ${(-sinV).toFixed(2)})`, px + labelOff, py - 12);
+        function drawCircle() {
+            const w = circleCanvas.width;
+            const h = circleCanvas.height;
+            if (w <= 0 || h <= 0) return;
 
-  ctx.textAlign = 'left';
-}
+            const cx = w / 2;
+            const cy = h / 2;
+            // 💡 R sử dụng tỷ lệ chung đã được tính toán ở hàm draw()
+            const R = sharedScale; 
 
-function var_white_text() { return '#e0e8f0'; }
+            ctxCircle.clearRect(0, 0, w, h);
+            globalPoints.circle = {}; // Reset điểm
 
-function arrow(ctx, x, y, dx, dy) {
-  ctx.fillStyle = C.axis;
-  ctx.beginPath();
-  const size = 7;
-  ctx.moveTo(x + dx*size, y + dy*size);
-  ctx.lineTo(x - dy*4, y + dx*4);
-  ctx.lineTo(x + dy*4, y - dx*4);
-  ctx.fill();
-}
+            // Hệ tọa độ chính (có mũi tên)
+            ctxCircle.beginPath();
+            ctxCircle.strokeStyle = COLORS.axis;
+            ctxCircle.lineWidth = 2;
+            
+            // Trục Ngang (Ox)
+            ctxCircle.moveTo(20, cy); ctxCircle.lineTo(w - 15, cy);
+            ctxCircle.lineTo(w - 23, cy - 4); // Cánh trên
+            ctxCircle.moveTo(w - 15, cy);
+            ctxCircle.lineTo(w - 23, cy + 4); // Cánh dưới
 
-// ─── GRAPH ────────────────────────────────────────────────────────────────────
-function drawGraph() {
-  const cv = document.getElementById('graph');
-  const ctx = cv.getContext('2d');
-  const W = cv.width, H = cv.height;
+            // Trục Dọc (Oy)
+            ctxCircle.moveTo(cx, h - 20); ctxCircle.lineTo(cx, 15);
+            ctxCircle.lineTo(cx - 4, 23); // Cánh trái
+            ctxCircle.moveTo(cx, 15);
+            ctxCircle.lineTo(cx + 4, 23); // Cánh phải
+            ctxCircle.stroke();
+            
+            ctxCircle.fillStyle = COLORS.text;
+            ctxCircle.font = '12px Inter';
+            ctxCircle.fillText('x', w - 10, cy + 15);
+            ctxCircle.fillText('y', cx + 12, 12);
+            ctxCircle.fillText('cos', w - 40, cy - 10);
+            ctxCircle.fillText('sin', cx - 25, 25);
 
-  ctx.clearRect(0, 0, W, H);
+            // Ghi chú nhãn giá trị 0, 1, -1 trên hệ trục Vòng tròn
+            ctxCircle.fillStyle = COLORS.text; 
+            ctxCircle.font = '11px Inter';
+            ctxCircle.fillText('O', cx - 12, cy + 15);
+            ctxCircle.fillText('1', cx + R + 5, cy + 15); // x = 1
+            ctxCircle.fillText('-1', cx - R - 18, cy + 15); // x = -1
+            ctxCircle.fillText('1', cx - 15, cy - R - 8); // y = 1 (trên)
+            ctxCircle.fillText('-1', cx - 20, cy + R + 15); // y = -1 (dưới)
 
-  const padL = 56, padR = 30, padT = 20, padB = 36;
-  const gW = W - padL - padR;
-  const gH = H - padT - padB;
-  const midY = padT + gH / 2;
-  const startX = padL;
+            // Vòng tròn đơn vị
+            ctxCircle.beginPath();
+            ctxCircle.arc(cx, cy, R, 0, 2 * Math.PI);
+            ctxCircle.strokeStyle = COLORS.circle;
+            ctxCircle.lineWidth = 2;
+            ctxCircle.stroke();
 
-  // x range: 0 to 2π, with room for -x if needed — just show 0..2π
-  const xScale = gW / (2 * Math.PI); // pixels per radian
-  const yScale = gH / 4.6;           // -2.3 to 2.3 visible range (tan clipped)
+            // Trục Tan (tiếp tuyến dọc)
+            if (show.tan) {
+                ctxCircle.beginPath();
+                ctxCircle.strokeStyle = COLORS.tan + '66';
+                ctxCircle.lineWidth = 1;
+                ctxCircle.moveTo(cx + R, 20);
+                ctxCircle.lineTo(cx + R, h - 20);
+                ctxCircle.stroke();
+                ctxCircle.fillStyle = COLORS.tan;
+                ctxCircle.fillText('trục tan', cx + R + 5, 30);
+            }
 
-  function toScreen(xRad, yVal) {
-    return {
-      x: startX + xRad * xScale,
-      y: midY - yVal * yScale
-    };
-  }
+            // Trục Cot (tiếp tuyến ngang)
+            if (show.cot) {
+                ctxCircle.beginPath();
+                ctxCircle.strokeStyle = COLORS.cot + '66';
+                ctxCircle.lineWidth = 1;
+                ctxCircle.moveTo(20, cy - R);
+                ctxCircle.lineTo(w - 20, cy - R);
+                ctxCircle.stroke();
+                ctxCircle.fillStyle = COLORS.cot;
+                ctxCircle.fillText('trục cot', w - 50, cy - R - 10);
+            }
 
-  // Background subtle grid lines
-  ctx.lineWidth = 0.5;
-  // Horizontal lines at -2,-1,0,1,2
-  [-2,-1,0,1,2].forEach(v => {
-    const sy = midY - v * yScale;
-    ctx.strokeStyle = v === 0 ? '#2a2d3f' : C.gridMinor || '#131623';
-    ctx.beginPath(); ctx.moveTo(padL, sy); ctx.lineTo(W - padR, sy); ctx.stroke();
-  });
-  // Vertical lines at π/2, π, 3π/2, 2π
-  [0.5, 1, 1.5, 2].forEach(mul => {
-    const sx = startX + mul * Math.PI * xScale;
-    ctx.strokeStyle = mul === 1 ? '#2a2d3f' : '#131623';
-    ctx.beginPath(); ctx.moveTo(sx, padT); ctx.lineTo(sx, H - padB); ctx.stroke();
-  });
+            const mx = cx + R * Math.cos(currentAngle);
+            const my = cy - R * Math.sin(currentAngle);
 
-  // Axes
-  ctx.strokeStyle = '#8899aa';
-  ctx.lineWidth = 1.5;
-  // Ox
-  ctx.beginPath(); ctx.moveTo(padL, midY); ctx.lineTo(W - padR + 10, midY); ctx.stroke();
-  ctx.fillStyle = '#8899aa';
-  arrow(ctx, W - padR + 10, midY, 1, 0);
-  // Oy
-  ctx.beginPath(); ctx.moveTo(startX, H - padB); ctx.lineTo(startX, padT - 5); ctx.stroke();
-  arrow(ctx, startX, padT - 5, 0, -1);
+            ctxCircle.beginPath();
+            ctxCircle.moveTo(cx, cy);
+            ctxCircle.arc(cx, cy, R * 0.2, 0, -currentAngle, currentAngle > 0);
+            ctxCircle.fillStyle = COLORS.angle + '40';
+            ctxCircle.fill();
+            ctxCircle.strokeStyle = COLORS.angle;
+            ctxCircle.stroke();
 
-  // Axis labels
-  ctx.fillStyle = '#aabbc0';
-  ctx.font = 'bold 13px Sora';
-  ctx.fillText('x', W - padR + 14, midY + 5);
-  ctx.fillText('y', startX - 18, padT);
+            ctxCircle.beginPath();
+            ctxCircle.moveTo(cx, cy);
+            ctxCircle.lineTo(mx, my);
+            ctxCircle.strokeStyle = '#e2e8f0';
+            ctxCircle.lineWidth = 2;
+            ctxCircle.stroke();
 
-  // Y axis ticks and numbers
-  ctx.fillStyle = '#6a7a8a';
-  ctx.font = '11px JetBrains Mono';
-  ctx.textAlign = 'right';
-  [-2,-1,1,2].forEach(v => {
-    const sy = midY - v * yScale;
-    ctx.beginPath(); ctx.moveTo(startX - 4, sy); ctx.lineTo(startX + 4, sy);
-    ctx.strokeStyle = '#444'; ctx.lineWidth = 1; ctx.stroke();
-    ctx.fillText(v, startX - 8, sy + 4);
-  });
+            ctxCircle.beginPath();
+            ctxCircle.arc(mx, my, 5, 0, 2 * Math.PI);
+            ctxCircle.fillStyle = '#e2e8f0';
+            ctxCircle.fill();
 
-  // X axis π labels
-  ctx.textAlign = 'center';
-  const piLabels = [['π/2', 0.5], ['π', 1], ['3π/2', 1.5], ['2π', 2]];
-  piLabels.forEach(([lbl, mul]) => {
-    const sx = startX + mul * Math.PI * xScale;
-    ctx.beginPath(); ctx.moveTo(sx, midY - 4); ctx.lineTo(sx, midY + 4);
-    ctx.strokeStyle = '#444'; ctx.lineWidth = 1; ctx.stroke();
-    ctx.fillStyle = '#6a7a8a';
-    ctx.font = '11px JetBrains Mono';
-    ctx.fillText(lbl, sx, midY + 18);
-  });
+            // 1. Ghi nhận SIN
+            if (show.sin) {
+                globalPoints.circle.sin = { x: cx, y: my };
+                ctxCircle.beginPath();
+                ctxCircle.setLineDash([5, 5]);
+                ctxCircle.moveTo(mx, my);
+                ctxCircle.lineTo(cx, my);
+                ctxCircle.strokeStyle = COLORS.sin;
+                ctxCircle.lineWidth = 1;
+                ctxCircle.stroke();
+                
+                ctxCircle.setLineDash([]);
+                ctxCircle.beginPath();
+                ctxCircle.moveTo(cx, cy);
+                ctxCircle.lineTo(cx, my);
+                ctxCircle.lineWidth = 4;
+                ctxCircle.stroke();
+            }
 
-  // 0 label
-  ctx.textAlign = 'right';
-  ctx.fillStyle = '#6a7a8a';
-  ctx.fillText('0', startX - 6, midY + 14);
+            // 2. Ghi nhận COS
+            if (show.cos) {
+                globalPoints.circle.cos = { x: mx, y: cy };
+                ctxCircle.beginPath();
+                ctxCircle.setLineDash([5, 5]);
+                ctxCircle.moveTo(mx, my);
+                ctxCircle.lineTo(mx, cy);
+                ctxCircle.strokeStyle = COLORS.cos;
+                ctxCircle.lineWidth = 1;
+                ctxCircle.stroke();
+                
+                ctxCircle.setLineDash([]);
+                ctxCircle.beginPath();
+                ctxCircle.moveTo(cx, cy);
+                ctxCircle.lineTo(mx, cy);
+                ctxCircle.lineWidth = 4;
+                ctxCircle.stroke();
+            }
 
-  // Draw function curve
-  const color = activeTab === 'sin' ? C.sin : activeTab === 'cos' ? C.cos : C.tan;
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 2.5;
-  ctx.beginPath();
-  let first = true;
-  const steps = gW * 2;
-  for (let i = 0; i <= steps; i++) {
-    const xRad = (i / steps) * 2 * Math.PI;
-    let yVal;
-    if (activeTab === 'sin') yVal = Math.sin(xRad);
-    else if (activeTab === 'cos') yVal = Math.cos(xRad);
-    else yVal = Math.tan(xRad);
+            // 3. Ghi nhận TAN
+            if (show.tan) {
+                let tanVal = Math.tan(currentAngle);
+                if (Math.abs(tanVal) < 10) {
+                    let ty = cy - R * tanVal;
+                    globalPoints.circle.tan = { x: cx + R, y: ty };
+                    
+                    ctxCircle.beginPath();
+                    ctxCircle.setLineDash([5, 5]);
+                    ctxCircle.moveTo(cx, cy);
+                    ctxCircle.lineTo(cx + R, ty);
+                    ctxCircle.strokeStyle = COLORS.tan;
+                    ctxCircle.lineWidth = 1;
+                    ctxCircle.stroke();
 
-    if (activeTab === 'tan' && Math.abs(yVal) > 2.2) {
-      ctx.stroke(); ctx.beginPath(); first = true; continue;
-    }
-    const pt = toScreen(xRad, yVal);
-    if (first) { ctx.moveTo(pt.x, pt.y); first = false; }
-    else ctx.lineTo(pt.x, pt.y);
-  }
-  ctx.stroke();
+                    ctxCircle.setLineDash([]);
+                    ctxCircle.beginPath();
+                    ctxCircle.moveTo(cx + R, cy);
+                    ctxCircle.lineTo(cx + R, ty);
+                    ctxCircle.lineWidth = 4;
+                    ctxCircle.stroke();
 
-  // Current angle marker on graph
-  const curRad = (((angle % 360) + 360) % 360) * Math.PI / 180;
-  let markerY;
-  if (activeTab === 'sin') markerY = Math.sin(curRad);
-  else if (activeTab === 'cos') markerY = Math.cos(curRad);
-  else markerY = Math.tan(curRad);
+                    ctxCircle.beginPath();
+                    ctxCircle.arc(cx + R, ty, 4, 0, 2*Math.PI);
+                    ctxCircle.fillStyle = COLORS.tan;
+                    ctxCircle.fill();
+                }
+            }
 
-  const mpt = toScreen(curRad, markerY);
-  if (mpt.x >= padL && mpt.x <= W - padR && (!( activeTab === 'tan') || Math.abs(markerY) < 2.2)) {
-    // Dashed vertical line from x-axis to point
-    ctx.strokeStyle = 'rgba(255,255,255,0.18)';
-    ctx.lineWidth = 1;
-    ctx.setLineDash([4, 3]);
-    ctx.beginPath(); ctx.moveTo(mpt.x, midY); ctx.lineTo(mpt.x, mpt.y); ctx.stroke();
-    // Dashed horizontal line to y-axis
-    ctx.beginPath(); ctx.moveTo(padL, mpt.y); ctx.lineTo(mpt.x, mpt.y); ctx.stroke();
-    ctx.setLineDash([]);
+            // 4. Ghi nhận COT
+            if (show.cot) {
+                let cotVal = 1 / Math.tan(currentAngle);
+                if (Math.abs(cotVal) < 10) {
+                    let tx = cx + R * cotVal;
+                    globalPoints.circle.cot = { x: tx, y: cy - R };
+                    
+                    ctxCircle.beginPath();
+                    ctxCircle.setLineDash([5, 5]);
+                    ctxCircle.moveTo(cx, cy);
+                    ctxCircle.lineTo(tx, cy - R);
+                    ctxCircle.strokeStyle = COLORS.cot;
+                    ctxCircle.lineWidth = 1;
+                    ctxCircle.stroke();
 
-    // Marker circle
-    ctx.fillStyle = color;
-    ctx.beginPath(); ctx.arc(mpt.x, mpt.y, 7, 0, Math.PI*2); ctx.fill();
-    ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
-  }
-}
+                    ctxCircle.setLineDash([]);
+                    ctxCircle.beginPath();
+                    ctxCircle.moveTo(cx, cy - R);
+                    ctxCircle.lineTo(tx, cy - R);
+                    ctxCircle.lineWidth = 4;
+                    ctxCircle.stroke();
 
-// ─── UPDATE ───────────────────────────────────────────────────────────────────
-function update() {
-  const rad = angle * Math.PI / 180;
-  const s = Math.sin(rad), c = Math.cos(rad), t = Math.tan(rad);
-  document.getElementById('vsin').textContent = s.toFixed(4);
-  document.getElementById('vcos').textContent = c.toFixed(4);
-  document.getElementById('vtan').textContent = Math.abs(c) < 0.01 ? '∞' : t.toFixed(4);
+                    ctxCircle.beginPath();
+                    ctxCircle.arc(tx, cy - R, 4, 0, 2*Math.PI);
+                    ctxCircle.fillStyle = COLORS.cot;
+                    ctxCircle.fill();
+                }
+            }
+            ctxCircle.setLineDash([]); 
+        }
 
-  document.getElementById('info-deg').textContent = angle + '°';
-  document.getElementById('info-rad').textContent = rad.toFixed(3) + ' rad';
-  const fnNames = { sin: 'sin(θ)', cos: 'cos(θ)', tan: 'tan(θ)' };
-  const fnVals  = { sin: s, cos: c, tan: t };
-  document.getElementById('info-fn').textContent = fnNames[activeTab] + ' =';
-  document.getElementById('info-val').textContent =
-    (activeTab === 'tan' && Math.abs(c) < 0.01) ? '∞' : fnVals[activeTab].toFixed(4);
-  const dotColors = { sin: 'var(--sin)', cos: 'var(--cos)', tan: 'var(--tan)' };
-  document.getElementById('info-dot').style.background = dotColors[activeTab];
+        function drawGraph() {
+            const w = graphCanvas.width;
+            const h = graphCanvas.height;
+            if (w <= 0 || h <= 0) return;
 
-  // Slider gradient
-  const sl = document.getElementById('slider');
-  const pct = (angle / 360 * 100).toFixed(1) + '%';
-  sl.style.setProperty('--pct', pct);
+            const cx = w / 2;
+            const cy = h / 2;
+            
+            ctxGraph.clearRect(0, 0, w, h);
+            globalPoints.graph = {}; // Reset điểm
 
-  drawCircle();
-  drawGraph();
-}
+            // 💡 Tỉ lệ chuẩn: 1 đơn vị trục X bằng đúng 1 đơn vị trục Y
+            const xScale = sharedScale; 
+            const yScale = sharedScale; 
 
-function setAngle(v) {
-  angle = Math.max(0, Math.min(360, parseInt(v) || 0));
-  document.getElementById('slider').value = angle;
-  document.getElementById('angleNum').value = angle;
-  update();
-}
+            // Lưới đồ thị
+            ctxGraph.beginPath();
+            ctxGraph.strokeStyle = COLORS.grid;
+            ctxGraph.lineWidth = 1;
+            
+            // Vẽ lưới theo giới hạn màn hình động
+            const maxY = Math.ceil((h / 2) / yScale);
+            for(let y = -maxY; y <= maxY; y++) {
+                let py = cy - y * yScale;
+                ctxGraph.moveTo(0, py); ctxGraph.lineTo(w, py);
+            }
+            
+            // Tính toán số vạch lưới PI/2 tối đa có thể hiển thị trên nửa màn hình hiện tại
+            const maxK = Math.ceil((w / 2) / (Math.PI / 2 * xScale));
+            for(let i = -maxK; i <= maxK; i++) {
+                let ang = i * Math.PI / 2;
+                let px = cx + ang * xScale;
+                ctxGraph.moveTo(px, 0); ctxGraph.lineTo(px, h);
+            }
+            ctxGraph.stroke(); // Vẽ xong đường lưới
 
-function setTab(t) {
-  activeTab = t;
-  document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
-  document.getElementById('tab-' + t).classList.add('active');
-  update();
-}
+            // Vẽ trục chính Oxy (có mũi tên)
+            ctxGraph.beginPath();
+            ctxGraph.strokeStyle = COLORS.axis;
+            ctxGraph.lineWidth = 2;
+            
+            // Trục Ox
+            ctxGraph.moveTo(0, cy); ctxGraph.lineTo(w - 5, cy);
+            ctxGraph.lineTo(w - 13, cy - 4);
+            ctxGraph.moveTo(w - 5, cy);
+            ctxGraph.lineTo(w - 13, cy + 4);
+            
+            // Trục Oy
+            ctxGraph.moveTo(cx, h); ctxGraph.lineTo(cx, 5);
+            ctxGraph.lineTo(cx - 4, 13);
+            ctxGraph.moveTo(cx, 5);
+            ctxGraph.lineTo(cx + 4, 13);
+            ctxGraph.stroke();
+            
+            // Ghi chú nhãn các trục x, y
+            ctxGraph.font = '11px Inter';
+            ctxGraph.fillStyle = COLORS.text;
+            ctxGraph.textAlign = 'center';
+            ctxGraph.fillText('x', w - 10, cy + 15);
+            ctxGraph.fillText('y', cx + 12, 12);
+            
+            // Vẽ các nhãn trên trục hoành (xử lý dạng phân số \dfrac)
+            for(let i = -maxK; i <= maxK; i++) {
+                if (i !== 0) {
+                    let px = cx + i * Math.PI / 2 * xScale;
+                    let label = "";
+                    
+                    // Khởi tạo label với cấu trúc \dfrac{}{}
+                    if(i === 2) label = "π";
+                    else if(i === -2) label = "-π";
+                    else if(i % 2 === 0) label = (i/2) + "π";
+                    else if(i === 1) label = "\\dfrac{π}{2}";
+                    else if(i === -1) label = "-\\dfrac{π}{2}";
+                    else {
+                        let sign = i < 0 ? "-" : "";
+                        label = sign + "\\dfrac{" + Math.abs(i) + "π}{2}";
+                    }
+                    
+                    // Parser hiển thị \dfrac{}{} thành phân số thực trên đồ thị
+                    if (label.includes("\\dfrac")) {
+                        let match = label.match(/(-?)\\dfrac\{([^}]+)\}\{([^}]+)\}/);
+                        if (match) {
+                            let sign = match[1];
+                            let num = match[2];
+                            let den = match[3];
+                            
+                            let signWidth = sign ? ctxGraph.measureText(sign).width : 0;
+                            let numWidth = ctxGraph.measureText(num).width;
+                            let denWidth = ctxGraph.measureText(den).width;
+                            let fracWidth = Math.max(numWidth, denWidth);
+                            
+                            let totalWidth = signWidth + fracWidth + (sign ? 2 : 0);
+                            let startX = px - totalWidth / 2;
+                            
+                            // Vẽ dấu trừ (-) nếu có
+                            if (sign) {
+                                ctxGraph.fillText(sign, startX + signWidth/2, cy + 18);
+                            }
+                            
+                            let fracCenterX = startX + signWidth + (sign ? 2 : 0) + fracWidth/2;
+                            
+                            // Vẽ Tử số và Mẫu số
+                            ctxGraph.fillText(num, fracCenterX, cy + 12);
+                            ctxGraph.fillText(den, fracCenterX, cy + 26);
+                            
+                            // Kẻ vạch ngang phân số
+                            ctxGraph.beginPath();
+                            ctxGraph.strokeStyle = COLORS.axis;
+                            ctxGraph.lineWidth = 1;
+                            ctxGraph.moveTo(fracCenterX - fracWidth/2 - 2, cy + 16);
+                            ctxGraph.lineTo(fracCenterX + fracWidth/2 + 2, cy + 16);
+                            ctxGraph.stroke();
+                        }
+                    } else {
+                        ctxGraph.fillText(label, px, cy + 15);
+                    }
+                }
+            }
 
-document.getElementById('slider').oninput  = e => setAngle(e.target.value);
-document.getElementById('angleNum').oninput = e => setAngle(e.target.value);
+            function plotFunction(func, color, checkAsymptote, name) {
+                ctxGraph.beginPath();
+                ctxGraph.strokeStyle = color;
+                ctxGraph.lineWidth = 2;
+                
+                let isFirstPoint = true;
+                let prevYVal = 0;
 
-// Responsive graph canvas
-function resizeGraph() {
-  const gPanel = document.getElementById('graph').parentElement;
-  const newW = gPanel.clientWidth - 40;
-  if (newW > 300) {
-    document.getElementById('graph').width = newW;
-  }
-}
-window.addEventListener('resize', () => { resizeGraph(); update(); });
-resizeGraph();
-update();
-</script>
+                const step = 0.05;
+                const startX = -2 * Math.PI;
+                
+                for (let x = startX; x <= currentAngle; x += step) {
+                    let calcX = (x + step > currentAngle) ? currentAngle : x; 
+                    
+                    let yVal = func(calcX);
+                    let px = cx + calcX * xScale;
+                    let py = cy - yVal * yScale;
+
+                    let jump = false;
+                    if (checkAsymptote && !isFirstPoint) {
+                        if (Math.abs(yVal - prevYVal) > 5) jump = true;
+                    }
+
+                    if (isFirstPoint || jump) {
+                        ctxGraph.moveTo(px, py);
+                        isFirstPoint = false;
+                    } else {
+                        ctxGraph.lineTo(px, py);
+                    }
+                    prevYVal = yVal;
+                }
+                ctxGraph.stroke();
+
+                if (currentAngle >= startX) {
+                    let finalY = func(currentAngle);
+                    // Kiểm tra điểm cuối có nằm trong vùng nhìn thấy của Canvas không
+                    if (Math.abs(finalY * yScale) <= h / 2 - 5) { 
+                        let px = cx + currentAngle * xScale;
+                        let py = cy - finalY * yScale;
+                        
+                        globalPoints.graph[name] = { x: px, y: py };
+
+                        // ĐẶC BIỆT DÀNH CHO COS VÀ COT: Vẽ đoạn tung độ đậm để so sánh độ dài
+                        if (name === 'cos' || name === 'cot') {
+                            ctxGraph.beginPath();
+                            ctxGraph.setLineDash([5, 5]); // Chuyển thành nét đứt
+                            ctxGraph.moveTo(px, cy); // Từ trục hoành Ox
+                            ctxGraph.lineTo(px, py); // Lên/xuống điểm đồ thị
+                            ctxGraph.strokeStyle = color;
+                            ctxGraph.lineWidth = 2; // Chỉnh mảnh hơn (giảm từ 4 xuống 2)
+                            ctxGraph.stroke();
+                            ctxGraph.setLineDash([]); // Trả lại nét liền cho các hình vẽ sau
+                        }
+
+                        ctxGraph.beginPath();
+                        ctxGraph.arc(px, py, 4, 0, 2*Math.PI);
+                        ctxGraph.fillStyle = '#1e293b'; // Trùng với màu nền bảng tối
+                        ctxGraph.fill();
+                        ctxGraph.lineWidth = 2;
+                        ctxGraph.strokeStyle = color;
+                        ctxGraph.stroke();
+                    }
+                }
+            }
+
+            if (show.sin) plotFunction(Math.sin, COLORS.sin, false, 'sin');
+            if (show.cos) plotFunction(Math.cos, COLORS.cos, false, 'cos');
+            if (show.tan) plotFunction(Math.tan, COLORS.tan, true, 'tan');
+            if (show.cot) plotFunction((a) => 1 / Math.tan(a), COLORS.cot, true, 'cot');
+        }
+
+        function drawConnections() {
+            ctxOverlay.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+            
+            const mainRect = mainElement.getBoundingClientRect();
+            const circleRect = document.getElementById('circleContainer').getBoundingClientRect();
+            const graphRect = document.getElementById('graphContainer').getBoundingClientRect();
+
+            Object.keys(show).forEach(func => {
+                // CHỈ vẽ đường nối Overlay cho SIN và TAN
+                if ((func === 'sin' || func === 'tan') && show[func] && globalPoints.circle[func] && globalPoints.graph[func]) {
+                    const p1 = globalPoints.circle[func];
+                    const p2 = globalPoints.graph[func];
+
+                    const startX = p1.x + (circleRect.left - mainRect.left);
+                    const startY = p1.y + (circleRect.top - mainRect.top);
+                    
+                    const endX = p2.x + (graphRect.left - mainRect.left);
+                    const endY = p2.y + (graphRect.top - mainRect.top);
+
+                    ctxOverlay.beginPath();
+                    ctxOverlay.setLineDash([8, 6]);
+                    ctxOverlay.moveTo(startX, startY);
+                    ctxOverlay.lineTo(endX, endY);
+                    
+                    ctxOverlay.strokeStyle = COLORS[func];
+                    ctxOverlay.globalAlpha = 0.4;
+                    ctxOverlay.lineWidth = 1.5;
+                    ctxOverlay.stroke();
+                    
+                    ctxOverlay.globalAlpha = 1.0;
+                    ctxOverlay.setLineDash([]);
+                }
+            });
+        }
+
+        function draw() {
+            // Tính toán tỷ lệ đồng bộ (1 đơn vị R = 1 đơn vị Y)
+            const hGraph = graphCanvas.height;
+            const minDimCircle = Math.min(circleCanvas.width, circleCanvas.height);
+            
+            // Đồ thị y muốn hiển thị lý tưởng trong khoảng biên độ từ -2.5 đến 2.5
+            let scaleY = (hGraph / 2) / 2.5; 
+            // Bán kính R tối đa mà vòng tròn chứa được (chừa lề 40px để hiển thị nhãn)
+            let maxR = (minDimCircle / 2) - 40;
+            
+            // Lấy giá trị nhỏ hơn làm tỷ lệ chung để đảm bảo 2 bên đều hiển thị gọn gàng
+            sharedScale = Math.max(10, Math.min(scaleY, maxR));
+
+            drawCircle();
+            drawGraph();
+            drawConnections(); // Vẽ cầu nối cuối cùng
+        }
+
+        setTimeout(() => {
+            resizeCanvas();
+            updateDisplay();
+        }, 100);
+
+    </script>
 </body>
 </html>
+        <script>
+          try {
+            
+          } catch (err) {
+            console.error('Runtime Error:', err);
+            document.body.innerHTML += '<div style="color:red; background:#ffe6e6; padding:10px; margin-top:20px; border-radius:4px; border:1px solid red;"><strong>Runtime Error:</strong> ' + err.message + '</div>';
+          }
+        </script>
+      </body>
+    </html>
+  
